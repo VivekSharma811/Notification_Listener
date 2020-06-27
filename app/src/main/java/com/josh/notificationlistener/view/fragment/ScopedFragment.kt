@@ -1,6 +1,5 @@
-package com.josh.notificationlistener.view.activity.fragment
+package com.josh.notificationlistener.view.fragment
 
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope

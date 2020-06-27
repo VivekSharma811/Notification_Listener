@@ -8,7 +8,11 @@ import android.util.Log
 import com.josh.notificationlistener.model.dataclass.Message
 import com.josh.notificationlistener.view.listener.MyListener
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class NotificationService : NotificationListenerService() {
@@ -32,7 +36,7 @@ class NotificationService : NotificationListenerService() {
         )
         try {
             if(sbn.packageName.equals("com.whatsapp")) {
-                myListener!!.setValue(Message(sbn.notification.extras.get("android.title").toString(), sbn.notification.extras.get("android.text").toString(), Calendar.getInstance().time.toString()))
+                myListener!!.setValue(Message(sbn.notification.extras.get("android.title").toString(), sbn.notification.extras.get("android.text").toString(), SimpleDateFormat("HH:mm, dd-mm-yy").format(Date()).toString()))
             }
         } catch (e : Exception) {
             Log.e(TAG, e.message)
