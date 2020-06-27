@@ -1,10 +1,12 @@
 package com.josh.notificationlistener.view.fragment
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.josh.notificationlistener.R
 import com.josh.notificationlistener.model.dataclass.Message
+import com.josh.notificationlistener.model.helper.NotificationHelper
 import com.josh.notificationlistener.service.NotificationService
 import com.josh.notificationlistener.view.adapter.MessagesAdapter
 import com.josh.notificationlistener.view.listener.MyListener
@@ -76,17 +79,41 @@ class MainFragment : ScopedFragment(), KodeinAware, MyListener {
             .get(MessageViewModel::class.java)
 
         listen()
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            registerBubble()
+        }
     }
 
     override fun setValue(message : Message) {
         persist(message)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            showBubble(message)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun registerBubble() {
+        val notification = context?.let { NotificationHelper(it) }
+        notification?.setUpNotificationChannels()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun showBubble(message: Message) {
+        val notification = context?.let { NotificationHelper(it) }
+        notification?.showNotification(message, true)
     }
 
     private fun listen() = launch {
+
         viewModel.getMessages()
         viewModel.allMessages.observe(viewLifecycleOwner, Observer {
+            if(it.size == 0) {
+                defaultText.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+            }
             messagesAdapter.updateMessages(it)
             progressBar.visibility = View.GONE
+            defaultText.visibility = View.GONE
             messagesList.visibility = View.VISIBLE
         })
     }

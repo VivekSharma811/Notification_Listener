@@ -7,6 +7,7 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.josh.notificationlistener.R
+import com.josh.notificationlistener.model.dataclass.Message
 import com.josh.notificationlistener.view.activity.BubbleActivity
 
 class NotificationHelper(private val context: Context) {
@@ -35,21 +36,18 @@ class NotificationHelper(private val context: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun showNotification(fromUser: Boolean) {
+    fun showNotification(message: Message?, fromUser: Boolean) {
 
         val icon = createIcon()
 
         val person = createPerson(icon)
 
-        val notification = createNotification(icon, person)
+        val notification = createNotification(message, icon, person)
 
-        // Create the Bubble's Metadata
         val bubbleMetaData = createBubbleMetadata(icon, fromUser)
 
-        // Set the bubble metadata
         notification.setBubbleMetadata(bubbleMetaData)
 
-        // Build and Display the Notification
         notificationManager?.notify(NOTIFICATION_ID, notification.build())
     }
 
@@ -97,19 +95,35 @@ class NotificationHelper(private val context: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun createNotification(icon: Icon, person: Person): Notification.Builder {
-        return Notification.Builder(context, CHANNEL_QUOTES)
-            .setContentTitle("Message")
-            .setLargeIcon(icon)
-            .setSmallIcon(icon)
-            .setCategory(Notification.CATEGORY_MESSAGE)
-            .setStyle(
-                Notification.MessagingStyle(person)
-                    .setGroupConversation(false)
-                    .addMessage("Text", System.currentTimeMillis(), person)
-            )
-            .addPerson(person)
-            .setShowWhen(true)
-            .setContentIntent(createIntent(REQUEST_CONTENT))
+    fun createNotification(message: Message?, icon: Icon, person: Person): Notification.Builder {
+        if(message != null) {
+            return Notification.Builder(context, CHANNEL_QUOTES)
+                .setContentTitle(message.user)
+                .setLargeIcon(icon)
+                .setSmallIcon(icon)
+                .setCategory(Notification.CATEGORY_MESSAGE)
+                .setStyle(
+                    Notification.MessagingStyle(person)
+                        .setGroupConversation(false)
+                        .addMessage(message.message, System.currentTimeMillis(), person)
+                )
+                .addPerson(person)
+                .setShowWhen(true)
+                .setContentIntent(createIntent(REQUEST_CONTENT))
+        } else {
+            return Notification.Builder(context, CHANNEL_QUOTES)
+                .setContentTitle("Message")
+                .setLargeIcon(icon)
+                .setSmallIcon(icon)
+                .setCategory(Notification.CATEGORY_MESSAGE)
+                .setStyle(
+                    Notification.MessagingStyle(person)
+                        .setGroupConversation(false)
+                        .addMessage("Text", System.currentTimeMillis(), person)
+                )
+                .addPerson(person)
+                .setShowWhen(true)
+                .setContentIntent(createIntent(REQUEST_CONTENT))
+        }
     }
 }
