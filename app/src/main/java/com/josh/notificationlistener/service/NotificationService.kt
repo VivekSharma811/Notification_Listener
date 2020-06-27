@@ -1,10 +1,15 @@
-package com.josh.notificationlistener
+package com.josh.notificationlistener.service
 
+import android.app.Notification
 import android.content.Context
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.josh.notificationlistener.model.dataclass.Message
+import com.josh.notificationlistener.view.listener.MyListener
 import java.lang.Exception
+import java.time.LocalDateTime
+import java.util.*
 
 class NotificationService : NotificationListenerService() {
     private val TAG = this.javaClass.simpleName
@@ -26,7 +31,9 @@ class NotificationService : NotificationListenerService() {
             "ID :" + sbn.id + " \t " + sbn.notification.tickerText + " \t " + sbn.packageName
         )
         try {
-            myListener!!.setValue("Post: " + sbn.packageName)
+            if(sbn.packageName.equals("com.whatsapp")) {
+                myListener!!.setValue(Message(sbn.notification.extras.get("android.title").toString(), sbn.notification.extras.get("android.text").toString(), Calendar.getInstance().time.toString()))
+            }
         } catch (e : Exception) {
             Log.e(TAG, e.message)
         }
@@ -38,11 +45,11 @@ class NotificationService : NotificationListenerService() {
             TAG,
             "ID :" + sbn.id + " \t " + sbn.notification.tickerText + " \t " + sbn.packageName
         )
-        myListener!!.setValue("Remove: " + sbn.packageName)
+        //myListener!!.setValue("Remove: " + sbn.packageName)
     }
 
     fun setListener(myListener: MyListener?) {
-        NotificationService.myListener = myListener ;
+        Companion.myListener = myListener ;
     }
 
 }
