@@ -35,6 +35,12 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+
+        <receiver android:name=".view.activity.MainActivity$NotificationReceiver">
+            <intent-filter>
+                <action android:name="com.josh.notificationlistener.NOTIFICATION_LISTENER" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -62,7 +62,6 @@ class MainFragment : ScopedFragment(), KodeinAware, MyListener {
                 val position = viewHolder.adapterPosition
                 messagesList.removeViewAt(position)
                 messagesAdapter.notifyItemRemoved(position)
-                //delete(position)
                 deleteMessage(messagesAdapter.getMessageAtPosition(position))
             }
         }
@@ -87,13 +86,6 @@ class MainFragment : ScopedFragment(), KodeinAware, MyListener {
 
     fun deleteMessage(message: Message) = launch {
         viewModel.delete(message)
-    }
-
-    fun delete(messageId : Int) = launch {
-        //val count = viewModel.delete(messageId)
-//        if(count != null) {
-//            Toast.makeText(context, count.toString(), Toast.LENGTH_SHORT).show()
-//        }
     }
 
     override fun setValue(message : Message) {

@@ -22,12 +22,9 @@ class MessageRepositoryImpl(
         }
     }
 
-    override suspend fun deleteMessage(message: Message) : Int {
-        return withContext(Dispatchers.IO) {
-//            val count = messageDao.count()
-//            val message = messageDao.getMessage(count - messageId)
+    override suspend fun deleteMessage(message: Message) {
+        withContext(Dispatchers.IO) {
             messageDao.deleteItem(message)
-            return@withContext messageDao.count()
         }
     }
 }

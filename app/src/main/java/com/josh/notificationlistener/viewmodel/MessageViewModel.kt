@@ -20,8 +20,8 @@ class MessageViewModel(
         allMessages = messageRepository.getMessages()
     }
 
-    suspend fun delete(message: Message) : Int {
-        return messageRepository.deleteMessage(message)
+    suspend fun delete(message: Message) {
+        messageRepository.deleteMessage(message)
     }
 
 }
