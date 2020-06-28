@@ -27,7 +27,10 @@ class NotificationService : NotificationListenerService() {
             if(sbn.notification.flags and Notification.FLAG_GROUP_SUMMARY !== 0) {
                 return
             }
-            myListener!!.setValue(Message(sbn.notification.extras.get("android.title").toString(), sbn.notification.extras.get("android.text").toString(), SimpleDateFormat("HH:mm, dd-mm-yy").format(Date()).toString()))
+            if(sbn.notification.extras.get("android.title").toString().equals("WhatsApp")) {
+                return
+            }
+            myListener!!.setValue(Message(sbn.notification.extras.get("android.title").toString(), sbn.notification.extras.get("android.text").toString(), SimpleDateFormat("HH:mm, dd-MM-yy").format(Date()).toString()))
         }
     }
 

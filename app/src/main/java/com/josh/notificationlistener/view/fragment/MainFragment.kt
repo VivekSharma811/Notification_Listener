@@ -60,9 +60,10 @@ class MainFragment : ScopedFragment(), KodeinAware, MyListener {
         val swipeToDelete = object : SwipeToDelete() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
                 messagesList.removeViewAt(position)
                 messagesAdapter.notifyItemRemoved(position)
+                //delete(position)
+                deleteMessage(messagesAdapter.getMessageAtPosition(position))
             }
         }
 
@@ -82,6 +83,17 @@ class MainFragment : ScopedFragment(), KodeinAware, MyListener {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             registerBubble()
         }
+    }
+
+    fun deleteMessage(message: Message) = launch {
+        viewModel.delete(message)
+    }
+
+    fun delete(messageId : Int) = launch {
+        //val count = viewModel.delete(messageId)
+//        if(count != null) {
+//            Toast.makeText(context, count.toString(), Toast.LENGTH_SHORT).show()
+//        }
     }
 
     override fun setValue(message : Message) {
@@ -104,7 +116,6 @@ class MainFragment : ScopedFragment(), KodeinAware, MyListener {
     }
 
     private fun listen() = launch {
-
         viewModel.getMessages()
         viewModel.allMessages.observe(viewLifecycleOwner, Observer {
             if(it.size == 0) {
@@ -121,5 +132,4 @@ class MainFragment : ScopedFragment(), KodeinAware, MyListener {
     private fun persist(message: Message) = launch {
         viewModel.addMessage(message)
     }
-
 }

@@ -9,4 +9,6 @@ interface MessageRepository {
 
     suspend fun getMessages() : LiveData<List<Message>>
 
+    suspend fun deleteMessage(message: Message) : Int
+
 }

@@ -16,6 +16,8 @@ class MessagesAdapter(var messageList : ArrayList<Message>)  : RecyclerView.Adap
         notifyDataSetChanged()
     }
 
+    fun getMessageAtPosition(position: Int) = messageList.get(position)
+
     class MessageViewHolder(var view : ItemMessageBinding) : RecyclerView.ViewHolder(view.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {

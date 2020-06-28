@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 class MessageRepositoryImpl(
     private val messageDao: MessageDao
 ) : MessageRepository {
+
     override suspend fun addMessage(message: Message) {
         withContext(Dispatchers.IO) {
             messageDao.insert(message)
@@ -18,6 +19,15 @@ class MessageRepositoryImpl(
     override suspend fun getMessages(): LiveData<List<Message>> {
         return withContext(Dispatchers.IO) {
             return@withContext messageDao.getAllMessages()
+        }
+    }
+
+    override suspend fun deleteMessage(message: Message) : Int {
+        return withContext(Dispatchers.IO) {
+//            val count = messageDao.count()
+//            val message = messageDao.getMessage(count - messageId)
+            messageDao.deleteItem(message)
+            return@withContext messageDao.count()
         }
     }
 }

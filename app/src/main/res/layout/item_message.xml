@@ -33,6 +33,9 @@
             android:text="User"
             app:layout_constraintVertical_bias=".2"
             app:layout_constraintHorizontal_bias=".2"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
             />
 
         <TextView
@@ -45,7 +48,7 @@
             android:id="@+id/timestamp"
             android:text="Time"
             app:layout_constraintVertical_bias=".2"
-            app:layout_constraintHorizontal_bias=".7"
+            app:layout_constraintHorizontal_bias=".8"
             />
 
         <TextView
@@ -58,7 +61,7 @@
             android:id="@+id/message"
             android:text="message"
             app:layout_constraintHorizontal_bias=".3"
-            app:layout_constraintVertical_bias=".4"/>
+            app:layout_constraintVertical_bias=".45"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

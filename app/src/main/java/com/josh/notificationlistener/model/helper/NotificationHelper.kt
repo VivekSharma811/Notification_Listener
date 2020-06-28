@@ -12,7 +12,7 @@ import com.josh.notificationlistener.view.activity.BubbleActivity
 
 class NotificationHelper(private val context: Context) {
     companion object {
-        private const val CHANNEL_QUOTES = "quotes"
+        private const val CHANNEL_MESSAGE = "messages"
         private const val REQUEST_CONTENT = 1
         private const val REQUEST_BUBBLE = 2
         private const val NOTIFICATION_ID = 0
@@ -23,9 +23,9 @@ class NotificationHelper(private val context: Context) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun setUpNotificationChannels() {
         if (notificationManager?.getNotificationChannel(
-                CHANNEL_QUOTES) == null) {
+                CHANNEL_MESSAGE) == null) {
             val channel = NotificationChannel(
-                CHANNEL_QUOTES,
+                CHANNEL_MESSAGE,
                     "Messages",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
@@ -97,7 +97,7 @@ class NotificationHelper(private val context: Context) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun createNotification(message: Message?, icon: Icon, person: Person): Notification.Builder {
         if(message != null) {
-            return Notification.Builder(context, CHANNEL_QUOTES)
+            return Notification.Builder(context, CHANNEL_MESSAGE)
                 .setContentTitle(message.user)
                 .setLargeIcon(icon)
                 .setSmallIcon(icon)
@@ -111,7 +111,7 @@ class NotificationHelper(private val context: Context) {
                 .setShowWhen(true)
                 .setContentIntent(createIntent(REQUEST_CONTENT))
         } else {
-            return Notification.Builder(context, CHANNEL_QUOTES)
+            return Notification.Builder(context, CHANNEL_MESSAGE)
                 .setContentTitle("Message")
                 .setLargeIcon(icon)
                 .setSmallIcon(icon)

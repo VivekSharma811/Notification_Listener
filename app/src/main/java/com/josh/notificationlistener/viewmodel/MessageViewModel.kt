@@ -1,5 +1,6 @@
 package com.josh.notificationlistener.viewmodel
 
+import android.app.Notification
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.josh.notificationlistener.model.dataclass.Message
@@ -17,6 +18,10 @@ class MessageViewModel(
 
     suspend fun getMessages() {
         allMessages = messageRepository.getMessages()
+    }
+
+    suspend fun delete(message: Message) : Int {
+        return messageRepository.deleteMessage(message)
     }
 
 }
